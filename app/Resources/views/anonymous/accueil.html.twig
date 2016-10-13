@@ -1,0 +1,64 @@
+{% extends 'agvoybase.html.twig' %}
+
+{% block main %}
+    <h1 class="text-center">Accueil</h1>
+    	 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <li><a href="{{ path('fos_user_profile_show') }}">Voir mon profil</a></li>
+                                    {% endif %}
+                                    
+	<div id="search"></div>
+	<div class="row">
+		<div class="col-sm-3"> <!-- A propos -->
+			<div class="well"><h2>A propos	</h2><p>bsdjb zjd zku kuzg d</p></div>
+		</div>
+		<div class="col-sm-6"> <!--  partie centrale -->
+		
+		 <!--  liste des cricuits -->
+		 <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Description</th>
+                <th>Paysdepart</th>
+                <th>Villedepart</th>
+                <th>Villearrivee</th>
+                <th>Dureecircuit</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for circuit in circuits %}
+            <tr>
+                <td><a href="{{ path('circuit_show', { 'id': circuit.id }) }}">{{ circuit.id }}</a></td>
+                <td>{{ circuit.description }}</td>
+                <td>{{ circuit.paysDepart }}</td>
+                <td>{{ circuit.villeDepart }}</td>
+                <td>{{ circuit.villeArrivee }}</td>
+                <td>{{ circuit.dureeCircuit }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('circuit_show', { 'id': circuit.id }) }}">détails</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+		
+		</div>
+		
+		
+		
+		
+	<div class="col-sm-3"> <!-- Contact -->
+		<div class="well"><h2>Contact	</h2>
+		<p>bsdjb zjd zku kuzg d</p></div>
+		</div>
+	
+	</div>
+
+   
+    
+{% endblock %} {# main #}
