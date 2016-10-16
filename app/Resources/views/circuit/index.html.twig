@@ -1,16 +1,24 @@
 {% extends 'agvoybase.html.twig' %}
 
 {% block main %}
-    <h1>Nos circuits</h1>
+   
   {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <li><a href="{# {{ path('circuit_new') }} #}">Nouveau Circuit</a></li>
+           <li><a href="{# {{ path('circuit_edit') }} #}">Editer le Brouillon</a></li>
                                     {% endif %}
-                                    <!--  Gestion circuit brouillon -->
                                     
+    <div class="row">
+    <div class="col-sm-4">
+     <div class="well"><h2>Les mieux notés</h2></div>
+    <div class="well"><h2>Les plus demandés</h2></div>
+    <div class="well"><h2>Les Nouveautés</h2></div>
+    </div>   
+     <div class="col-sm-8">  
+      <h1>Nos circuits</h1>                           
     <table>
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Numéro</th>
                 <th>Description</th>
                 <th>Paysdepart</th>
                 <th>Villedepart</th>
@@ -27,11 +35,11 @@
                 <td>{{ circuit.paysDepart }}</td>
                 <td>{{ circuit.villeDepart }}</td>
                 <td>{{ circuit.villeArrivee }}</td>
-                <td>{{ circuit.dureeCircuit }}</td>
+                <td>{{ circuit.dureeCircuit }} jours</td>
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('circuit_show', { 'id': circuit.id }) }}">détails</a>
+                            <a href="{{ path('circuit_show', { 'id': circuit.id }) }}">Plus de détails >> 	</a>
                         </li>
                     </ul>
                 </td>
@@ -39,5 +47,6 @@
         {% endfor %}
         </tbody>
     </table>
+    </div>
     
 {% endblock %} {# main #}

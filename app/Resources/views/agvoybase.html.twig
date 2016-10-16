@@ -30,8 +30,9 @@
                                      
             
                                      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                     <li>Nom</li>
                                       <li>
-           								<a href="{{ path('profile_show') }}">Mon Profil</a>                         
+           								<a href="{{ path('profile_show') }}">Voir mon Profil</a>                         
 									</li>
                                     <li>
            								<a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a>                         
