@@ -9087,3 +9087,7 @@
 [2016-10-16 16:24:35] security.INFO: Populated the TokenStorage with an anonymous Token. [] []
 [2016-10-16 16:24:35] doctrine.DEBUG: SELECT t0.id AS id_1, t0.description AS description_2, t0.pays_depart AS pays_depart_3, t0.ville_depart AS ville_depart_4, t0.ville_arrivee AS ville_arrivee_5, t0.duree_circuit AS duree_circuit_6 FROM circuit t0 [] []
 [2016-10-16 16:24:38] request.INFO: Matched route "{route}". {"route":"_wdt","route_parameters":{"_controller":"web_profiler.controller.profiler:toolbarAction","token":"a93ed7","_route":"_wdt"},"request_uri":"http://127.0.0.1:8000/_wdt/a93ed7","method":"GET"} []
+[2016-10-16 16:34:02] request.INFO: Matched route "{route}". {"route":"accueil_show","route_parameters":{"_controller":"AppBundle\\Controller\\AnonymousController::indexAction","_route":"accueil_show"},"request_uri":"http://127.0.0.1:8000/accueil/","method":"GET"} []
+[2016-10-16 16:34:02] security.INFO: Populated the TokenStorage with an anonymous Token. [] []
+[2016-10-16 16:34:02] doctrine.DEBUG: SELECT t0.id AS id_1, t0.description AS description_2, t0.pays_depart AS pays_depart_3, t0.ville_depart AS ville_depart_4, t0.ville_arrivee AS ville_arrivee_5, t0.duree_circuit AS duree_circuit_6 FROM circuit t0 [] []
+[2016-10-16 16:34:05] request.INFO: Matched route "{route}". {"route":"_wdt","route_parameters":{"_controller":"web_profiler.controller.profiler:toolbarAction","token":"69f750","_route":"_wdt"},"request_uri":"http://127.0.0.1:8000/_wdt/69f750","method":"GET"} []
