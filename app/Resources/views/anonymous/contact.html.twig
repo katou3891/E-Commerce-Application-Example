@@ -8,16 +8,22 @@
 			<div class="well"><h2>Téléphone	</h2><p>{# {{ presentation.telephone }} #}</p></div>
 		</div>
 		<div class="col-sm-6"> <!--  partie centrale -->
-		
+		<h2>Aller en agence</h2>
+		<p>Adresse : {# {{ presentation.adresse }} #}</p>
+		<div></div> <!-- Carte -->
 		
 		</div>
 		
 		
 		
 	<div class="col-sm-3"> <!-- Contact -->
-		<div class="well"><h2>Aller en agence</h2>
-		<p></p></div>
+			<div class="well"><h2>Contactez-nous dès maintenant!</h2>
+		<p>Par téléphone au : <br />{# {{ presentation.apropos }} #}</p>
+		<p>Ou rendez-vous dans notre agence :
+		<br />{# {{ presentation.adresse }} #}</p>
 		</div>
+		<div class="well"><h2>Signaler un problème</h2><p><a href="mailto:{# {{ presentation.mail }} #}">@mail.com</a></p></div>		</div>
+	
 	
 	</div>
 
