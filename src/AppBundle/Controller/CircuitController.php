@@ -112,6 +112,9 @@ class CircuitController extends Controller
      *
      * Or edit a draft previously saved in the session
      * @Route("/manage/circuit/editdraft", name="circuit_editdraft")
+     * 
+     * Or remove a circuit
+     * @Route("/manage/circuit/{id}/remove", name="circuit_remove")
      */
     public function editCircuit($id = null, Request $request)
     {
@@ -148,12 +151,20 @@ class CircuitController extends Controller
     	}
     
     	// Construct the form
-    	$formBuilder = $this->createFormBuilder($circuit)
-    	->add('description', TextType::class)
-    	->add('dureeCircuit', IntegerType::class)
-    	->add('paysDepart', TextType::class)
-    	->add('VilleDepart', TextType::class)
-    	->add('VilleArrivee', TextType::class);
+    	$formBuilder = $this->createFormBuilder($circuit);
+    	if ($request->attributes->get('_route') == "etapes_remove"){
+    		/* Can have the possibility to put a textarea to explain a short comment on the reason of the deletion :
+    		 $formBuilder->add('Commentaires', TextareaType::class); */
+    		$formBuilder->add('Supprimer', SubmitType::class, array('label' => 'Supprimer'));
+    	} else { // otherwise, we want to change or add an etape
+    		$formBuilder->add('description', TextType::class)
+    		->add('dureeCircuit', IntegerType::class)
+    		->add('paysDepart', TextType::class)
+    		->add('VilleDepart', TextType::class)
+    		->add('VilleArrivee', TextType::class)
+    		->add('save', SubmitType::class, array('label' => 'Envoyer'));
+    	}
+    	
        
     	// If in new circuit creation, add a button to allow saving a draft
     	if (!$id) {
@@ -182,6 +193,7 @@ class CircuitController extends Controller
     					'villeArrivee' => $circuit->getVilleArrivee(),
     					'dureeCircuit' => $circuit->getDureeCircuit()    					
     			]);
+    			
     
     			$this->addFlash('success', 'Brouillon de circuit sauvegardé');
     
@@ -193,15 +205,24 @@ class CircuitController extends Controller
     			// Persist for good in the DB
     			$entityManager = $this->getDoctrine()->getManager();
     			$entityManager->persist($circuit);
-    
+    			if ($request->attributes->get('_route') == "circuit_remove"){
+    				$entityManager->remove($circuit);
+    			} else {
+    				$entityManager->persist($circuit);
+    			}
     			$entityManager->flush();
     				
-    			// We may have created a new circuit of edidting an existing one
-    			if($id) {
-    				$message = 'Circuit'. $circuit->getId() .' modifié avec succès';
-    			} else {
-    				$message = 'Circuit '. $circuit->getId() .' créé avec succès';
-    			}
+    			switch ($request->attributes->get('_route')){
+    				case "circuit_new" :
+    					$message = 'Circuit '. $circuit->getId() .' ajouté avec succès';
+    					break;
+    				case "circuit_remove" :
+    					$message = 'Circuit '. $circuit->getId() .' supprimé avec succès';
+    					break;
+    				default:
+    					$message = 'Circuit '. $circuit->getId() .' modifié avec succès';
+    					break;
+    			};
     			$this->addFlash('success', $message);
     
     			// either way, display the circuit
@@ -443,7 +464,7 @@ class CircuitController extends Controller
     		if ($request->attributes->get('_route') == "programmations_remove"){
     			$entityManager->remove($programmation);
     		} else {
-    			$entityManager->persist($etape);
+    			$entityManager->persist($programmation);
     		}
     		$entityManager->flush();
     
