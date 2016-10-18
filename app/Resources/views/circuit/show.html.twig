@@ -66,5 +66,25 @@
         <li><a href="{{ path('circuit_show', { 'id': circuit.id+1 }) }}" title="">Suivant</a></li>
     </ul>
 	</div> {# circuit #}
+	 <div class="comments"> {# Commentaires #}
+	   <h2>Comments:</h2>
+       
+     
+            {{ form_start(commentform) }}
+            {{ form_widget(commentform) }}
+            {{ form_end(commentform) }}
+
+        {% for comment in circuit.comments %}
+        {% dump(comment) %}
+        	<li>
+        		<a href="{{ path('circuit_show_comment', {'id': circuit.id, 'comment_id': comment.id}) }}">
+        			<strong>By {{ comment.authorEmail }} on {{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}:</strong>
+        		</a>
+        		<br>
+        	    {{ comment.content }}
+        	</li>
+        {% endfor %}
+        </ul>
+        </div>
     
 {% endblock %}  {# main #}

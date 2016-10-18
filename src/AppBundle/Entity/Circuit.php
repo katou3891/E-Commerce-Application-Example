@@ -85,6 +85,12 @@ class Circuit
      * (Doctrine INVERSE SIDE)
      */
     protected $etapes;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Commentaire", mappedBy="circuit", orphanRemoval=true)
+     * 
+     */
+    protected  $comments;
 
     /**
      * Get id
@@ -223,6 +229,7 @@ class Circuit
     {
         $this->programmations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->etapes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -327,4 +334,33 @@ class Circuit
     {
         return $this->etapes;
     }
+    
+    /**
+     * Get Comments
+     */
+    public function getComments()
+    {
+    	return $this->comments;
+    }
+    
+    /**
+     * Add a comment
+     * @param Comment $comment
+     */
+    public function addComment(Commentaire $comment)
+    {
+    	dump($comment);
+    	$this->comments->add($comment);
+    	$comment->setCircuit($this);
+    }
+    
+    /**
+     * Remove a comment
+     * @param Comment $comment
+     */
+    public function removeComment(Commentaire $comment)
+    {
+    	$this->comments->removeElement($comment);
+    }
+    
 }
