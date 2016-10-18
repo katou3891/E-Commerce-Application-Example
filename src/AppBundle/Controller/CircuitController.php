@@ -15,6 +15,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use AppBundle\Entity\Etape;
+use AppBundle\Entity\ProgrammationCircuit;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 
 /**
@@ -213,23 +215,35 @@ class CircuitController extends Controller
     
     
     /**
-     * Creates a new Etape for a given Circuit, or modify an existing one.
+     * Creates a new Etape for a given Circuit, or modify or remove an existing one.
      *
      * Create a new etape
      * @Route("/manage/circuit/{id}/etapes/new", name="etapes_new")
      *
      * Or edit an etape of an existing circuit
-	     * @Route("/manage/circuit/{id}/etapes/{etape_id}/edit", name="etapes_edit")
-	     * 
-     * 
+	 * @Route("/manage/circuit/{id}/etapes/{etape_id}/edit", name="etapes_edit")
+	 * 
+	 * Or remove an etape
+     * @Route("/manage/circuit/{id}/etapes/{etape_id}/remove", name="etapes_remove")
      *
      */
     public function editEtapes($id = null, Request $request, $etape_id = null)
     {
     	$user=$this->getUser();
     	
-    	//TODO if route = new $titile = Création d'une étape else modification
-    	$title="Edition";	
+    	// Set title depending on the name of the route
+    	switch ($request->attributes->get('_route')){
+    		case "etapes_new" :
+    			$title = "Ajout d'une étape";
+    			break;
+    		case "etapes_remove" :
+    			$title = "Etes-vous sûr de vouloir supprimer cette étape ?";
+    			break;
+    		default:
+    			$title = "Edition d'une étape";
+    			break;
+    	};
+    	
     	// If called for edition, load the circuit from the DB
     	if ($id) {
     		$circuit = $this->getDoctrine()
@@ -262,37 +276,61 @@ class CircuitController extends Controller
     		 
     	}
     	else {
-    		$etape=new Etape();
+    		if ($request->attributes->get('_route') == "etapes_new"){
+    			$etape=new Etape();}
+    		else {
+    			// cause the 404 page not found to be displayed
+    			throw $this->createNotFoundException();
+    		}
     	}
     	
     	// Construct the form
-    	$formBuilder = $this->createFormBuilder($etape)
-    	->add('numeroEtape', IntegerType::class)
-    	->add('villeEtape', TextType::class)
-    	->add('nombreJours', IntegerType::class);
+    	$formBuilder = $this->createFormBuilder($etape);
     	
-    	$form = $formBuilder->add('save', SubmitType::class, array('label' => 'Envoyer'))
-    	->getForm();
+    	//If we want to remove an etape
+    	if ($request->attributes->get('_route') == "etapes_remove"){
+    		/* Can have the possibility to put a textarea to explain a short comment on the reason of the deletion :
+    		$formBuilder->add('Commentaires', TextareaType::class); */
+    		$formBuilder->add('Supprimer', SubmitType::class, array('label' => 'Supprimer'));
+    	} else { // otherwise, we want to change or add an etape
+    		$formBuilder->add('numeroEtape', IntegerType::class)
+				    	->add('villeEtape', TextType::class)
+				    	->add('nombreJours', IntegerType::class)
+    					->add('save', SubmitType::class, array('label' => 'Envoyer'));
+    	}
+    	
+    	$form = $formBuilder->getForm();
     
     	$form->handleRequest($request);
     
     	if ($form->isSubmitted() && $form->isValid()) {
-    
+    		//TODO : Add and Record the name of the person who erase/add/change an etape in the database EtapeChanges (not created yet) -> in order to have some log about the changes of the circuits
     		
     		
     		
-    		     			// Persist for good in the DB
+    		    // Persist for good in the DB
     			$entityManager = $this->getDoctrine()->getManager();
-    			$entityManager->persist($etape);
-    
+    			//If we want to remove an etape
+    			if ($request->attributes->get('_route') == "etapes_remove"){
+    			$entityManager->remove($etape);
+		    	} else {
+		    		$entityManager->persist($etape);
+		    	}
     			$entityManager->flush();
     
     			// We may have created a new etape of edidting an existing one
-    			if($id) {
-    				$message = 'Etape '. $etape->getId() .' modifié avec succès';
-    			} else {
-    				$message = 'Etape '. $etape->getId() .' créé avec succès';
-    			}
+    			
+    			switch ($request->attributes->get('_route')){
+    				case "etapes_new" :
+    					$message = 'Etape '. $etape->getId() .' ajoutée avec succès';
+    					break;
+    				case "etapes_remove" :
+    					$message = 'Etape '. $etape->getId() .' supprimée avec succès';
+    					break;
+    				default:
+    					$message = 'Etape '. $etape->getId() .' modifiée avec succès';
+    					break;
+    			};
     			$this->addFlash('success', $message);
     
     			// either way, display the circuit
@@ -304,18 +342,37 @@ class CircuitController extends Controller
     	]);
     }
     
+    
     /**
-     * Delete an etape
+     * Creates a new Programmation for a given Circuit, or modify or remove an existing one.
      *
-     
-     * @Route("/manage/circuit/{id}/etapes/{etape_id}/remove", name="etapes_remove")
+     * Create a new programmation
+     * @Route("/manage/circuit/{id}/programmation/new", name="programmations_new")
      *
+     * Or edit an etape of an existing circuit
+     * @Route("/manage/circuit/{id}/programmation/{programmation_id}/edit", name="programmations_edit")
      *
+     * Or remove an etape
+     * @Route("/manage/circuit/{id}/programmation/{programmation_id}/remove", name="programmations_remove")
      *
      */
-    public function removeEtape($id = null, Request $request, $etape_id = null)
+    public function editProgrammation($id = null, Request $request, $programmation_id = null)
     {
     	$user=$this->getUser();
+    	 
+    	// Set title depending on the name of the route
+    	switch ($request->attributes->get('_route')){
+    		case "programmations_new" :
+    			$title = "Ajout d'une programmation";
+    			break;
+    		case "programmations_remove" :
+    			$title = "Etes-vous sûr de vouloir supprimer cette programmation ?";
+    			break;
+    		default:
+    			$title = "Edition d'une programmation";
+    			break;
+    	};
+    	 
     	// If called for edition, load the circuit from the DB
     	if ($id) {
     		$circuit = $this->getDoctrine()
@@ -334,42 +391,75 @@ class CircuitController extends Controller
     		throw $this->createNotFoundException();
     	}
     
-    	if ($etape_id) {
-    		$etape = $this->getDoctrine()
-    		->getRepository('AppBundle:Etape')
-    		->find($etape_id);
+    	if ($programmation_id) {
+    		$programmation = $this->getDoctrine()
+    		->getRepository('AppBundle:ProgrammationCircuit')
+    		->find($programmation_id);
     		 
-    		dump($etape);
+    		dump($programmation);
     		 
-    		if (!$etape) {
+    		if (!$programmation) {
     			// cause the 404 page not found to be displayed
     			throw $this->createNotFoundException();
     		}
     		 
     	}
     	else {
-    		throw $this->createNotFoundException();
+    		if ($request->attributes->get('_route') == "programmations_new"){
+    			$programmation=new ProgrammationCircuit();
+    		} else {
+    			// cause the 404 page not found to be displayed
+    			throw $this->createNotFoundException();
+    		}
     	}
     	 
     	// Construct the form
-    	$formBuilder = $this->createFormBuilder($etape);
-    	$form = $formBuilder->add('Supprimer', SubmitType::class, array('label' => 'Supprimer'))
-    	->getForm();
+    	$formBuilder = $this->createFormBuilder($programmation);
+    	 
+    	//If we want to remove an etape
+    	if ($request->attributes->get('_route') == "programmations_remove"){
+    		/* Can have the possibility to put a textarea to explain a short comment on the reason of the deletion :
+    		 $formBuilder->add('Commentaires', TextareaType::class); */
+    		$formBuilder->add('Supprimer', SubmitType::class, array('label' => 'Supprimer'));
+    	} else { // otherwise, we want to change or add an etape
+    		$formBuilder->add('dateDepart', DateType::class)
+    		->add('nombrePersonnes', IntegerType::class)
+    		->add('prix', IntegerType::class)
+    		->add('save', SubmitType::class, array('label' => 'Envoyer'));
+    	}
+    	 
+    	$form = $formBuilder->getForm();
     
     	$form->handleRequest($request);
     
     	if ($form->isSubmitted() && $form->isValid()) {
+    		//TODO : Add and Record the name of the person who erase/add/change an etape in the database ProgrammationChanges (not created yet) -> in order to have some log about the changes of the circuits
     
-    		$em = $this->getDoctrine()->getManager();
-    		
-    		$em->remove($etape);
-    		$em->flush();
     
+    
+    		// Persist for good in the DB
+    		$entityManager = $this->getDoctrine()->getManager();
+    		//If we want to remove an etape
+    		if ($request->attributes->get('_route') == "programmations_remove"){
+    			$entityManager->remove($programmation);
+    		} else {
+    			$entityManager->persist($etape);
+    		}
+    		$entityManager->flush();
     
     		// We may have created a new etape of edidting an existing one
-    		
-    		$message = 'Etape '. $etape->getNumeroEtape() .' supprimée avec succès';
-    	
+    		 
+    		switch ($request->attributes->get('_route')){
+    			case "programmations_new" :
+    				$message = 'Programmation '. $programmation->getId() .' ajoutée avec succès';
+    				break;
+    			case "programmations_remove" :
+    				$message = 'Programation '. $programmation->getId() .' supprimée avec succès';
+    				break;
+    			default:
+    				$message = 'Programmation '. $programmation->getId() .' modifiée avec succès';
+    				break;
+    		};
     		$this->addFlash('success', $message);
     
     		// either way, display the circuit
@@ -377,11 +467,10 @@ class CircuitController extends Controller
     	}
     	 
     	return $this->render('circuit/new.html.twig', [
-    			'form' => $form->createView(), 'user' => $user, 'title'=>"Etes-vous sûr de vouloir supprimer cette étape ?"
-    	, 'circuit_id' => $id
-    			
+    			'form' => $form->createView(), 'user' => $user, 'title'=>$title, 'circuit_id' => $id
     	]);
     }
     
+  
     
 }

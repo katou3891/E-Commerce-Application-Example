@@ -22,32 +22,16 @@
                             <ul class="nav navbar-nav">
 
                                 {% block header_navigation_links %}
-                                    <li>
-                                        <a href="{{ path('accueil_show') }}">Accueil</a>
-                                        <a href="{{ path('presentation_show') }}">Qui sommes-nous ?</a>
-                                        <a href="{{ path('circuit_index') }}">Circuits</a>
-                                        <a href="{{ path('contact_show') }}">Contact</a>
-                                     
-            
+                                    <li><a href="{{ path('accueil_show') }}">Accueil</a></li>
+                                    <li><a href="{{ path('presentation_show') }}">Qui sommes-nous ?</a></li>
+                                    <li><a href="{{ path('circuit_index') }}">Circuits</a></li>
+                                    <li><a href="{{ path('contact_show') }}">Contact</a></li>
                                      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                     <li> Bienvenue {{ user.prenom }} !</li>
-                                      <li>
-           								<a href="{{ path('profile_show') }}">Voir mon Profil</a>                         
-									</li>
-                                    <li>
-           								<a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a>                         
-									</li>
-									
-                                   
-                                    
-   								{% else %}
-                                    <li>
-           								<a href="{{ path('fos_user_security_login') }}">Se Connecter</a>                         
-									</li>
+                                     	<li><a href="{{ path('profile_show') }}">Bienvenue {{ user.prenom }} !</a></li>
+                                    	<li><a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
+   								    {% else %}
+                                    	<li><a href="{{ path('fos_user_security_login') }}">Se Connecter</a></li>
                                     {% endif %}
-                                    
-                                    </li>
-                               
                                 {% endblock %}
 
                             </ul>

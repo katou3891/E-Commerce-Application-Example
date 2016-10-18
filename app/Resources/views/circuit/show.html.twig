@@ -52,6 +52,9 @@
 		
 		<div class="programmations">
 		<h3>Programmations de ce circuit</h3>
+		 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			   <a href="{{ path('programmations_new', {'id': circuit.id}) }}">Ajouter une programmation</a>
+			     {% endif %}
 		<table>
 		 		<thead>
 					<tr>
@@ -66,6 +69,14 @@
 			   <td>{{ programmation.dateDepart|date('d-m-Y')  }}</td>
 			   <td>{{ programmation.nombrePersonnes }}</td> 
 			   <td>{{ programmation.prix }}€</td>
+			   {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			   <td>
+			   <a href="{{ path('programmations_edit', {'id': circuit.id, 'programmation_id' : programmation.id}) }}">Modifier la programmation</a>
+			   </td>
+			   <td>
+			   <a href="{{ path('programmations_remove', {'id': circuit.id, 'programmation_id' : programmation.id}) }}">Supprimer la programmation</a>
+			   </td>
+			     {% endif %}
 			</tr>
 		{% endfor %}
 		</table>
@@ -73,7 +84,9 @@
     <ul>
        <!-- TODO : Problème en début et fin de liste  -->
        <!-- TODO : Ajouter un title contenant la description du circuit sur lequel on se dirige -->
-        <li><a href="{{ path('circuit_show', { 'id': circuit.id-1 }) }}" title="">Précédent</a></li>
+        {% if circuit.id > 1 %}
+			     <li><a href="{{ path('circuit_show', { 'id': circuit.id-1 }) }}" title="">Précédent</a></li>
+			     {% endif %}
         <li><a href="{{ path('circuit_show', { 'id': circuit.id+1 }) }}" title="">Suivant</a></li>
     </ul>
 	</div> {# circuit #}

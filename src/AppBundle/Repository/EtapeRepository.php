@@ -22,15 +22,6 @@ class EtapeRepository extends \Doctrine\ORM\EntityRepository
 				return $query->getArrayResult();
 	}
 	
-	public function removeEtape($idcircuit, $idetape){
-		$this->getEntityManager()
-		->createQuery(
-				'DELETE FROM AppBundle:Etape p
-	            JOIN p.circuit c
-	            WHERE p.circuit_id = :cid AND p.id = :id'
-				)->setParameter('cid', $idcircuit)->setParameter('id', $idetape);
-				
 	
-	}
 	
 }
