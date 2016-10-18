@@ -4,7 +4,7 @@
    
   {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <li><a href="{# {{ path('circuit_new') }} #}">Nouveau Circuit</a></li>
-           <li><a href="{# {{ path('circuit_edit') }} #}">Editer le Brouillon</a></li>
+           <li><a href="{# {{ path('circuit_editdraft') }} #}">Editer le Brouillon</a></li>
                                     {% endif %}
                                     
     <div class="row">

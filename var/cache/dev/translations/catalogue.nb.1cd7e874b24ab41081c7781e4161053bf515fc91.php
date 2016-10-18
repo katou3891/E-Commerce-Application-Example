@@ -3,27 +3,6 @@
 use Symfony\Component\Translation\MessageCatalogue;
 
 $catalogue = new MessageCatalogue('nb', array (
-  'validators' => 
-  array (
-    'fos_user.username.already_used' => 'Brukernavnet er allerede i bruk',
-    'fos_user.username.blank' => 'Vennligst skriv inn et brukernavn',
-    'fos_user.username.short' => '[-Inf,Inf]Brukernavnet er for kort',
-    'fos_user.username.long' => '[-Inf,Inf]Brukernavnet er for langt',
-    'fos_user.email.already_used' => 'Epostadressen er allerede i bruk',
-    'fos_user.email.blank' => 'Vennligst skriv inn en epostadresse',
-    'fos_user.email.short' => '[-Inf,Inf]Epostadressen er for kort',
-    'fos_user.email.long' => '[-Inf,Inf]Epostadressen er for lang',
-    'fos_user.email.invalid' => 'Epostadressen er ikke gyldig',
-    'fos_user.password.blank' => 'Vennligst skriv inn et passord',
-    'fos_user.password.short' => '[-Inf,Inf]Passordet er for kort',
-    'fos_user.password.mismatch' => 'De innskrevne passordene stemmer ikke overens',
-    'fos_user.new_password.blank' => 'Vennligst skriv inn et nytt passord',
-    'fos_user.new_password.short' => '[-Inf,Inf]Det nye passordet er for kort',
-    'fos_user.current_password.invalid' => 'Det innskrevne passordet er ugyldig',
-    'fos_user.group.blank' => 'Vennligst skriv inn et navn',
-    'fos_user.group.short' => '[-Inf,Inf]Navnet er for kort',
-    'fos_user.group.long' => '[-Inf,Inf]Navnet er for langt',
-  ),
   'FOSUserBundle' => 
   array (
     'group.edit.submit' => 'Oppdater gruppe',
@@ -82,6 +61,27 @@ Teamet.
     'form.password_confirmation' => 'Verifisering',
     'form.new_password' => 'Nytt passord',
     'form.new_password_confirmation' => 'Verifisering',
+  ),
+  'validators' => 
+  array (
+    'fos_user.username.already_used' => 'Brukernavnet er allerede i bruk',
+    'fos_user.username.blank' => 'Vennligst skriv inn et brukernavn',
+    'fos_user.username.short' => '[-Inf,Inf]Brukernavnet er for kort',
+    'fos_user.username.long' => '[-Inf,Inf]Brukernavnet er for langt',
+    'fos_user.email.already_used' => 'Epostadressen er allerede i bruk',
+    'fos_user.email.blank' => 'Vennligst skriv inn en epostadresse',
+    'fos_user.email.short' => '[-Inf,Inf]Epostadressen er for kort',
+    'fos_user.email.long' => '[-Inf,Inf]Epostadressen er for lang',
+    'fos_user.email.invalid' => 'Epostadressen er ikke gyldig',
+    'fos_user.password.blank' => 'Vennligst skriv inn et passord',
+    'fos_user.password.short' => '[-Inf,Inf]Passordet er for kort',
+    'fos_user.password.mismatch' => 'De innskrevne passordene stemmer ikke overens',
+    'fos_user.new_password.blank' => 'Vennligst skriv inn et nytt passord',
+    'fos_user.new_password.short' => '[-Inf,Inf]Det nye passordet er for kort',
+    'fos_user.current_password.invalid' => 'Det innskrevne passordet er ugyldig',
+    'fos_user.group.blank' => 'Vennligst skriv inn et navn',
+    'fos_user.group.short' => '[-Inf,Inf]Navnet er for kort',
+    'fos_user.group.long' => '[-Inf,Inf]Navnet er for langt',
   ),
 ));
 

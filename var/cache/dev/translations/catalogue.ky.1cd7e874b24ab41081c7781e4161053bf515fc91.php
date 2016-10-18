@@ -3,27 +3,6 @@
 use Symfony\Component\Translation\MessageCatalogue;
 
 $catalogue = new MessageCatalogue('ky', array (
-  'validators' => 
-  array (
-    'fos_user.username.already_used' => 'Логин колдонулууда',
-    'fos_user.username.blank' => 'Логиниңизди жазыңыз',
-    'fos_user.username.short' => '[-Inf,Inf]Логиниңиз биз күткөндөн кыска',
-    'fos_user.username.long' => '[-Inf,Inf]Логиниңиз биз күткөндөн узун',
-    'fos_user.email.already_used' => 'Email колдонулууда',
-    'fos_user.email.blank' => 'Электрондук почтаңызды жазыңыз',
-    'fos_user.email.short' => '[-Inf,Inf]Email биз күткөндөн кыска',
-    'fos_user.email.long' => '[-Inf,Inf]Email биз күткөндөн узун',
-    'fos_user.email.invalid' => 'Email туура эмес форматта',
-    'fos_user.password.blank' => 'Сырдык сөзүңүздү жазыңыз',
-    'fos_user.password.short' => '[-Inf,Inf]Сырдык сөзүңүз биз күткөндөн кыска',
-    'fos_user.password.mismatch' => 'Сырдык сөздөр бири-бирине туура келбейт',
-    'fos_user.new_password.blank' => 'Жаңы сырдык сөз жазыңыз',
-    'fos_user.new_password.short' => '[-Inf,Inf]Жаңы сырдык сөз биз күткөндөн кыска',
-    'fos_user.current_password.invalid' => 'Сырдык сөз туура эмес жазылды',
-    'fos_user.group.blank' => 'Жаңы группанын атын жазыңыз',
-    'fos_user.group.short' => '[-Inf,Inf]Жаңы группанын аты биз күткөндөн кыска',
-    'fos_user.group.long' => '[-Inf,Inf]Жаңы группанын аты биз күткөндөн узун',
-  ),
   'FOSUserBundle' => 
   array (
     'group.edit.submit' => 'Группаны жаңылоо',
@@ -80,6 +59,27 @@ $catalogue = new MessageCatalogue('ky', array (
     'form.password_confirmation' => 'Сырдык сөздү аныктоо',
     'form.new_password' => 'Жаңы сырдык сөз',
     'form.new_password_confirmation' => 'Сырдык сөздү аныктоо',
+  ),
+  'validators' => 
+  array (
+    'fos_user.username.already_used' => 'Логин колдонулууда',
+    'fos_user.username.blank' => 'Логиниңизди жазыңыз',
+    'fos_user.username.short' => '[-Inf,Inf]Логиниңиз биз күткөндөн кыска',
+    'fos_user.username.long' => '[-Inf,Inf]Логиниңиз биз күткөндөн узун',
+    'fos_user.email.already_used' => 'Email колдонулууда',
+    'fos_user.email.blank' => 'Электрондук почтаңызды жазыңыз',
+    'fos_user.email.short' => '[-Inf,Inf]Email биз күткөндөн кыска',
+    'fos_user.email.long' => '[-Inf,Inf]Email биз күткөндөн узун',
+    'fos_user.email.invalid' => 'Email туура эмес форматта',
+    'fos_user.password.blank' => 'Сырдык сөзүңүздү жазыңыз',
+    'fos_user.password.short' => '[-Inf,Inf]Сырдык сөзүңүз биз күткөндөн кыска',
+    'fos_user.password.mismatch' => 'Сырдык сөздөр бири-бирине туура келбейт',
+    'fos_user.new_password.blank' => 'Жаңы сырдык сөз жазыңыз',
+    'fos_user.new_password.short' => '[-Inf,Inf]Жаңы сырдык сөз биз күткөндөн кыска',
+    'fos_user.current_password.invalid' => 'Сырдык сөз туура эмес жазылды',
+    'fos_user.group.blank' => 'Жаңы группанын атын жазыңыз',
+    'fos_user.group.short' => '[-Inf,Inf]Жаңы группанын аты биз күткөндөн кыска',
+    'fos_user.group.long' => '[-Inf,Inf]Жаңы группанын аты биз күткөндөн узун',
   ),
 ));
 

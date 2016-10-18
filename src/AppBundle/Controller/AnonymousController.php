@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Circuit;
 
+
 /**
  * Anonymous controller.
  */
@@ -14,18 +15,18 @@ class AnonymousController extends Controller
 {
     /**
      * Accueil
-     *@Route("/", name="homepage")
+     * @Route("/", name="homepage")
      * @Route("/accueil/", name="accueil_show")
      * @Method("GET")
      */
     public function indexAction()
     {
         $em = $this->getDoctrine()->getManager();
-
+$user = $this -> getUser();
         $circuits = $em->getRepository('AppBundle:Circuit')->findAll();
 
         return $this->render('anonymous/accueil.html.twig', array(
-            'circuits' => $circuits,
+            'circuits' => $circuits, 'user' => $user
         ));
     }
 
@@ -39,8 +40,8 @@ class AnonymousController extends Controller
     public function showAction()
     {
     	
-    
-    	return $this->render('anonymous/contact.html.twig');
+    	$user = $this -> getUser();
+    	return $this->render('anonymous/contact.html.twig',  array('user' => $user));
     }
     
     /**
@@ -52,9 +53,10 @@ class AnonymousController extends Controller
     public function showPresentation()
     {
     	 
-    
-    	return $this->render('anonymous/apropos.html.twig');
+    	$user = $this -> getUser();
+    	return $this->render('anonymous/apropos.html.twig',  array('user' => $user));
     }
     
+ 
 
 }

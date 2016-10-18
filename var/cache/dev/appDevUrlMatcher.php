@@ -100,6 +100,64 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
         }
 
+        if (0 === strpos($pathinfo, '/admin/account')) {
+            // admin_accounts_show
+            if ($pathinfo === '/admin/accounts') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_admin_accounts_show;
+                }
+
+                return array (  'id' => NULL,  '_controller' => 'AppBundle\\Controller\\AdminController::showAction',  '_route' => 'admin_accounts_show',);
+            }
+            not_admin_accounts_show:
+
+            // admin_specific_account_show
+            if (preg_match('#^/admin/account(?:/(?P<id>\\d+))?$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_admin_specific_account_show;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_specific_account_show')), array (  'id' => NULL,  '_controller' => 'AppBundle\\Controller\\AdminController::showAction',));
+            }
+            not_admin_specific_account_show:
+
+            // admin_account_create
+            if ($pathinfo === '/admin/account/new') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_admin_account_create;
+                }
+
+                return array (  'id' => NULL,  '_controller' => 'AppBundle\\Controller\\AdminController::newAction',  '_route' => 'admin_account_create',);
+            }
+            not_admin_account_create:
+
+            // admin_account_edit
+            if (preg_match('#^/admin/account/(?P<id>\\d+)/edit$#s', $pathinfo, $matches)) {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_admin_account_edit;
+                }
+
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'admin_account_edit')), array (  'id' => NULL,  '_controller' => 'AppBundle\\Controller\\AdminController::newAction',));
+            }
+            not_admin_account_edit:
+
+            // admin_account_editdraft
+            if ($pathinfo === '/admin/account/edit_draft') {
+                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                    $allow = array_merge($allow, array('GET', 'HEAD'));
+                    goto not_admin_account_editdraft;
+                }
+
+                return array (  'id' => NULL,  '_controller' => 'AppBundle\\Controller\\AdminController::newAction',  '_route' => 'admin_account_editdraft',);
+            }
+            not_admin_account_editdraft:
+
+        }
+
         // homepage
         if (rtrim($pathinfo, '/') === '') {
             if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
@@ -160,9 +218,9 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         }
         not_presentation_show:
 
-        if (0 === strpos($pathinfo, '/mon_profil')) {
+        if (0 === strpos($pathinfo, '/manage/mon_profil')) {
             // profile_show
-            if ($pathinfo === '/mon_profil') {
+            if ($pathinfo === '/manage/mon_profil') {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                     $allow = array_merge($allow, array('GET', 'HEAD'));
                     goto not_profile_show;
@@ -173,7 +231,7 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             not_profile_show:
 
             // profile_edit
-            if ($pathinfo === '/mon_profil_edit') {
+            if ($pathinfo === '/manage/mon_profil_edit') {
                 if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
                     $allow = array_merge($allow, array('GET', 'HEAD'));
                     goto not_profile_edit;
@@ -203,14 +261,46 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
             // circuit_show
             if (preg_match('#^/circuit/(?P<id>\\d+)$#s', $pathinfo, $matches)) {
-                if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
-                    $allow = array_merge($allow, array('GET', 'HEAD'));
-                    goto not_circuit_show;
-                }
-
                 return $this->mergeDefaults(array_replace($matches, array('_route' => 'circuit_show')), array (  '_controller' => 'AppBundle\\Controller\\CircuitController::showAction',));
             }
-            not_circuit_show:
+
+            // circuit_show_comment
+            if (preg_match('#^/circuit/(?P<id>[^/]++)/comments/(?P<comment_id>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'circuit_show_comment')), array (  '_controller' => 'AppBundle\\Controller\\CircuitController::showCommentAction',));
+            }
+
+        }
+
+        if (0 === strpos($pathinfo, '/manage/circuit')) {
+            // circuit_new
+            if ($pathinfo === '/manage/circuit/new') {
+                return array (  'id' => NULL,  '_controller' => 'AppBundle\\Controller\\CircuitController::editCircuit',  '_route' => 'circuit_new',);
+            }
+
+            // circuit_edit
+            if (preg_match('#^/manage/circuit/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'circuit_edit')), array (  'id' => NULL,  '_controller' => 'AppBundle\\Controller\\CircuitController::editCircuit',));
+            }
+
+            // circuit_editdraft
+            if ($pathinfo === '/manage/circuit/editdraft') {
+                return array (  'id' => NULL,  '_controller' => 'AppBundle\\Controller\\CircuitController::editCircuit',  '_route' => 'circuit_editdraft',);
+            }
+
+            // etapes_new
+            if (preg_match('#^/manage/circuit/(?P<id>[^/]++)/etapes/new$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'etapes_new')), array (  'id' => NULL,  'etape_id' => NULL,  '_controller' => 'AppBundle\\Controller\\CircuitController::editEtapes',));
+            }
+
+            // etapes_edit
+            if (preg_match('#^/manage/circuit/(?P<id>[^/]++)/etapes/(?P<etape_id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'etapes_edit')), array (  'id' => NULL,  'etape_id' => NULL,  '_controller' => 'AppBundle\\Controller\\CircuitController::editEtapes',));
+            }
+
+            // etapes_remove
+            if (preg_match('#^/manage/circuit/(?P<id>[^/]++)/etapes/(?P<etape_id>[^/]++)/remove$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'etapes_remove')), array (  'id' => NULL,  'etape_id' => NULL,  '_controller' => 'AppBundle\\Controller\\CircuitController::removeEtape',));
+            }
 
         }
 

@@ -10,4 +10,19 @@ namespace AppBundle\Repository;
  */
 class EtapeRepository extends \Doctrine\ORM\EntityRepository
 {
+	
+	public function findAllEtapes($idcircuit){
+	
+		$query = $this->getEntityManager()
+		->createQuery(
+				'SELECT p, c FROM AppBundle:Etape p
+	            JOIN p.circuit c
+	            WHERE p.circuit_id = :id'
+				)->setParameter('id', $idcircuit);
+				return $query->getArrayResult();
+	
+	
+	}
+	
+	
 }

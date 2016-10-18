@@ -1,0 +1,11 @@
+{% extends 'agvoybase.html.twig' %}
+
+
+{% block main %}
+    <h1>{{ title }}</h1>
+	<p><a href="{{ path('circuit_show' ,{'user': user, 'id' : circuit_id}) }}">Retourner sur le circuit </a></p>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}

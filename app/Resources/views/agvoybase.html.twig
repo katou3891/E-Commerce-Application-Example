@@ -30,7 +30,7 @@
                                      
             
                                      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                     <li>Nom</li>
+                                     <li> Bienvenue {{ user.prenom }} !</li>
                                       <li>
            								<a href="{{ path('profile_show') }}">Voir mon Profil</a>                         
 									</li>

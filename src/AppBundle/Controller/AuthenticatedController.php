@@ -5,8 +5,14 @@ namespace AppBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Entity\Circuit;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Request;
+use FOS\UserBundle\Event\GetResponseUserEvent;
+use FOS\UserBundle\FOSUserEvents;
+use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 /**
  * Authenticated controller.
  */
@@ -15,18 +21,14 @@ class AuthenticatedController extends Controller
 	
 	/**
 	 * Show the user
-	 * @Route("/mon_profil", name="profile_show")
+	 * @Route("/manage/mon_profil", name="profile_show")
 	 * 
 	 * @Method("GET")
 	 */
 	public function showAction()
 	{
 		$user = $this->getUser();
-		/*
-		if (!is_object($user) || !$user instanceof UserInterface) {
-			throw new AccessDeniedException('This user does not have access to this section.');
-		}
-	*/
+	
 		return $this->render('authenticated/profil.html.twig', array(
 				'user' => $user
 		));
@@ -34,16 +36,13 @@ class AuthenticatedController extends Controller
 	
 	/**
 	 * Edit the user
-	 * @Route("/mon_profil_edit", name="profile_edit")
+	 * @Route("manage/mon_profil_edit", name="profile_edit")
 	 * 
 	 * @Method("GET")
 	 */
 	public function editAction(Request $request)
 	{
 		$user = $this->getUser();
-		if (!is_object($user) || !$user instanceof UserInterface) {
-			throw new AccessDeniedException('This user does not have access to this section.');
-		}
 	
 		/** @var $dispatcher \Symfony\Component\EventDispatcher\EventDispatcherInterface */
 		$dispatcher = $this->get('event_dispatcher');
@@ -81,7 +80,7 @@ class AuthenticatedController extends Controller
 	
 			return $response;
 		}
-	
+	//TODO : CREATE A VIEW TO EDIT PROFILE
 		return $this->render('FOSUserBundle:Profile:edit.html.twig', array(
 				'form' => $form->createView()
 		));

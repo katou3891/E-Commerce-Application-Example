@@ -55,13 +55,17 @@
 		
 		
 	<div class="col-sm-3"> 
-		<div class="well"><h2>A propos	</h2><p>{# {{ presentation.apropos }} #}</p></div>
-		<div class="well"><h2>Contactez-nous dès maintenant!</h2>
-		<p>Par téléphone au : <br />{# {{ presentation.apropos }} #}</p>
-		<p>Ou rendez-vous dans notre agence :
-		<br />{# {{ presentation.adresse }} #}</p>
+		<div class="well"><h2>A propos	</h2>
+		<p>{# {{ presentation.apropos }} #}</p>
 		</div>
-		<div class="well"><h2>Signaler un problème</h2><p><a href="mailto:{# {{ presentation.mail }} #}">@mail.com</a></p></div>		</div>
+			<div class="well"><h2>Contactez-nous dès maintenant!</h2>
+		<p>Par téléphone au {# {{ presentation.telephone }} #}</p>
+		<p>Ou rendez-vous dans notre agence : {# {{ presentation.adresse }} #}
+		(<a href="">accès</a>)</p>
+		</div>
+	<div class="well"><h2>Signaler un problème	</h2>
+		<p><a href="{# {{ presentation.mail }} #}">{# {{ presentation.mail }} #}</a></p>
+		</div>
 	
 	</div>
 
