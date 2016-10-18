@@ -219,8 +219,8 @@ class CircuitController extends Controller
      * @Route("/manage/circuit/{id}/etapes/new", name="etapes_new")
      *
      * Or edit an etape of an existing circuit
-     * @Route("/manage/circuit/{id}/etapes/{etape_id}/edit", name="etapes_edit")
-     * 
+	     * @Route("/manage/circuit/{id}/etapes/{etape_id}/edit", name="etapes_edit")
+	     * 
      * 
      *
      */
@@ -360,14 +360,11 @@ class CircuitController extends Controller
     
     	if ($form->isSubmitted() && $form->isValid()) {
     
+    		$em = $this->getDoctrine()->getManager();
+    		
+    		$em->remove($etape);
+    		$em->flush();
     
-    
-    
-    		// Persist for good in the DB
-    		$entityManager = $this->getDoctrine()->getManager();
-    		$entityManager->persist($etape);
-    		//TODO Supprimer
-    		$entityManager->flush();
     
     		// We may have created a new etape of edidting an existing one
     		
