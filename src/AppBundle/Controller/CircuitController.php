@@ -24,23 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
  */
 class CircuitController extends Controller
 {
-    /**
-     * Lists all Circuit entities.
-     *
-     * @Route("/circuit/", name="circuit_index")
-     * @Method("GET")
-     * 
-     */
-    public function indexAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-		$user = $this->getUser();
-        $circuits = $em->getRepository('AppBundle:Circuit')->findAll();
-        
-        return $this->render('circuit/index.html.twig', array(
-            'circuits' => $circuits, 'user' => $user
-        ));
-    }
+  
 
     /**
      * Finds and displays a Circuit entity.
@@ -75,7 +59,7 @@ class CircuitController extends Controller
     	
     		$entityManager->flush();
     	
-    		$this->addFlash('success', 'Commentaire '. $newcomment->getId() .' créé avec succès');
+    		$this->addFlash('success', 'Commentaire créé avec succès');
     		return $this->redirectToRoute('circuit_show', ['id' => $circuit->getId()]);
     	
     	}

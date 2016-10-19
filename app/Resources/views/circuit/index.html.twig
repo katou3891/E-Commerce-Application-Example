@@ -2,10 +2,7 @@
 
 {% block main %}
    
-  {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <li><a href=" {{ path('circuit_new') }} ">Nouveau Circuit</a></li>
-           <li><a href=" {{ path('circuit_editdraft') }}">Editer le Brouillon</a></li>
-                                    {% endif %}
+ 
                                     
     <div class="row">
     <div class="col-sm-4">
@@ -24,8 +21,16 @@
      </ul>
      </div>
     </div>   
-     <div class="col-sm-8">  
-      <h1>Nos circuits</h1>                           
+     <div class="col-sm-8"> 
+      {% if is_granted('IS_AUTHENTICATED_FULLY') and showButtons %} 
+      <h1>Gestion des circuits</h1>
+      {% else %}
+      <h1>Nos Circuits</h1>
+      {% endif %}
+       {% if is_granted('IS_AUTHENTICATED_FULLY') and showButtons %}
+        <li><a href=" {{ path('circuit_new') }} ">Nouveau Circuit</a></li>
+           <li><a href=" {{ path('circuit_editdraft') }}">Editer le Brouillon</a></li>
+                                    {% endif %}                           
     <table>
         <thead>
             <tr>

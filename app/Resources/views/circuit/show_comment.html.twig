@@ -8,7 +8,7 @@
     <div class="date">{{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</div>
     <div class="body">
         {% dump(comment) %}
-     			<strong>By {{ comment.authorEmail }}:</strong>
+     			<strong>By {{ comment.authorEmail}}:</strong>
         		<br>
         	    {{ comment.content }}
     </div>

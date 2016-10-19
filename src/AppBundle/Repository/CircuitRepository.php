@@ -10,4 +10,15 @@ namespace AppBundle\Repository;
  */
 class CircuitRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function findCircuitsWithProgrammation(){
+		$query = $this->getEntityManager()
+		->createQuery(
+				'SELECT c FROM AppBundle:Circuit c, AppBundle:ProgrammationCircuit p
+	            WHERE p.circuit = c.id'
+				);
+				return $query->getArrayResult();
+	
+	
+	}
+	
 }

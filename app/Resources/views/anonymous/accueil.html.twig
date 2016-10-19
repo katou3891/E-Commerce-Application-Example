@@ -2,7 +2,7 @@
 
 {% block main %}
      <div id="welcome">
-  	   <h1 class="text-center">Bienvenue sur le site de La meilleure Agence !</h1>
+  	   <h1 class="text-center">Bienvenue sur le site de {{ presentation.nom }}</h1>
     </div>                  
 	
 	
@@ -59,12 +59,11 @@
 		<p>{# {{ presentation.apropos }} #}</p>
 		</div>
 			<div class="well"><h2>Contactez-nous dès maintenant!</h2>
-		<p>Par téléphone au {# {{ presentation.telephone }} #}</p>
-		<p>Ou rendez-vous dans notre agence : {# {{ presentation.adresse }} #}
-		(<a href="">accès</a>)</p>
+		<p>Par téléphone au {{ presentation.telephone }} </p>
+		<p>Ou rendez-vous dans notre agence : {{ presentation.adresse }} 
+				(<a href="{{ path('contact_show')  }}">accès</a>)</p>
 		</div>
-	<div class="well"><h2>Signaler un problème	</h2>
-		<p><a href="{# {{ presentation.mail }} #}">{# {{ presentation.mail }} #}</a></p>
+	<div class="well"><h2><a href="{{ path('contact_show') }}">Signaler un problème</a></h2>
 		</div>
 	
 	</div>
