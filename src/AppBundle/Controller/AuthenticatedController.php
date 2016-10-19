@@ -25,7 +25,7 @@ class AuthenticatedController extends Controller
 	 * 
 	 * @Method("GET")
 	 */
-	public function showAction()
+	public function showProfil()
 	{
 		$user = $this->getUser();
 	
@@ -40,7 +40,7 @@ class AuthenticatedController extends Controller
 	 * 
 	 * @Method("GET")
 	 */
-	public function editAction(Request $request)
+	public function editProfil(Request $request)
 	{
 		$user = $this->getUser();
 	
@@ -81,8 +81,8 @@ class AuthenticatedController extends Controller
 			return $response;
 		}
 	//TODO : CREATE A VIEW TO EDIT PROFILE
-		return $this->render('FOSUserBundle:Profile:edit.html.twig', array(
-				'form' => $form->createView()
+		return $this->render('authenticated/edit.html.twig', array(
+				'form' => $form->createView(), 'user' => $user
 		));
 	}
   

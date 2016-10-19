@@ -44,6 +44,9 @@
             </tr>
         </thead>
         <tbody>
+        {% if circuits|length == 0 %}
+        <p>Aucun circuit programmé dans le futur pour l'instant.</p>
+        {% endif %}
         {% for circuit in circuits %}
             <tr>
                 <td><a href="{{ path('circuit_show', { 'id': circuit.id }) }}">{{ circuit.id }}</a></td>

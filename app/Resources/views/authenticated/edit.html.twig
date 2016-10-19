@@ -1,0 +1,13 @@
+{% extends 'agvoybase.html.twig' %}
+
+{% block main %}
+<h1 class="text-center">Editer mon profil</h1>
+{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+    {{ form_widget(form) }}
+    <div>
+        <input type="submit" value="Valider" />
+    </div>
+   
+{{ form_end(form) }}
+
+{% endblock main %}
