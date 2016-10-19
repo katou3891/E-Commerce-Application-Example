@@ -9,7 +9,15 @@
     <div class="body">
         {% dump(comment) %}
      			<strong>By {{ comment.authorEmail}}:</strong>
-        		<br>
+     			<br />
+     			Note : {{ comment.note }}
+        		<br />
         	    {{ comment.content }}
+        	    
+        	     {% if is_granted('ROLE_ADMIN') %}
+        	     <br />
+        		 <a href="{{ path('admin_delete_comment', {'id': circuit.id, 'comment_id' : comment.id}) }}">Supprimer le commentaire</a>
+        		 
+        		 {% endif %}
     </div>
 {% endblock %}

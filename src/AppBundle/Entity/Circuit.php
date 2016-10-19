@@ -12,6 +12,9 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints\Date;
+
 
 /**
  * Circuit
@@ -275,6 +278,8 @@ class Circuit
     {
         return $this->programmations;
     }
+    
+   
 
     /**
      * Add etape

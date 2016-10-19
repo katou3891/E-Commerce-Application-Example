@@ -56,6 +56,16 @@ class Commentaire
      * )
      */
     private $content;
+    
+    /**
+     * @ORM\Column(name="note", type="integer")
+     * @Assert\Range(  
+     * 		min = 0,
+     *      max = 5,
+     * )
+     * 
+     */
+    private $note;
 
     /**
      * @ORM\Column(name="authorEmail", type="string")
@@ -99,6 +109,14 @@ class Commentaire
     public function setContent($content)
     {
         $this->content = $content;
+    }
+    
+    public function getNote(){
+    	return $this->note;
+    }
+    
+    public function setNote($note){
+    	$this->note = $note;
     }
 
     public function getAuthorEmail()

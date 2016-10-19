@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 /**
  * Admin controller.
@@ -57,9 +58,7 @@ class AdminController extends Controller
 	 */
 	public function newAction($id = null, Request $request)
 	{
-		$user = $this->getUser();
-		// TODO : CHECK THE USER IS THE ADMIN
-		
+		$user = $this->getUser();	
 		
 		//TODO 
 		// If called for edition, load the circuit from the DB
@@ -80,6 +79,56 @@ class AdminController extends Controller
 		));
 	}
 	
+	/** 
+	 * Delete a comment
+	 * @Route("/admin/circuit/{id}/delete_comment/{comment_id}", name="admin_delete_comment", requirements={
+	 *              "id": "\d+", "comment_id": "\d+"})
+	 */
+	public function deleteComment($id = null, $comment_id = null, Request $request)
+	{
+		
+		if (!$id || !$comment_id) {
+			// cause the 404 page not found to be displayed
+			throw $this->createNotFoundException();
+		}
+		$user = $this->getUser();
+		$circuit = $this->getDoctrine()->getRepository('AppBundle:Circuit')->find($id);
+		if (!$circuit) {
+			// cause the 404 page not found to be displayed
+			throw $this->createNotFoundException();
+		}
+		$comment = $this->getDoctrine()
+		->getRepository('AppBundle:Commentaire')
+		->find($comment_id);
+		if (!$comment) {
+			// cause the 404 page not found to be displayed
+			throw $this->createNotFoundException();
+		}
+		
+		$commentform = $this->createFormBuilder($comment)
+		->add('Supprimer', SubmitType::class, array('label' => 'Supprimer'))
+		->getForm();
+		$commentform->handleRequest($request);
+		 
+		if ($commentform->isSubmitted() && $commentform->isValid()){
+			$entityManager = $this->getDoctrine()->getManager();
+			$circuit->removeComment($comment);
+			$entityManager->remove($comment);
+			$entityManager->persist($circuit);
+			 
+			$entityManager->flush();
+			 
+			$this->addFlash('success', 'Commentaire supprimé avec succès');
+			return $this->redirectToRoute('circuit_show', ['id' => $circuit->getId()]);
+			 
+		}
+		$em = $this->getDoctrine()->getManager();
+		$comments = $em->getRepository('AppBundle:Commentaire')->findComments($circuit->getId());
+		return $this->render('circuit/new.html.twig', array('title'=>'Etes-vous sûr de vouloir supprimer ce commentaire ?',
+				'circuit' => $circuit, 'form'=> $commentform->createView(), 'comments' => $comments, 'user' => $user, 'circuit_id'=>$circuit->getId()
+		
+		));
+	}
 	
 
 }

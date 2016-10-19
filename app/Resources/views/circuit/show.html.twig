@@ -82,14 +82,7 @@
 		{% endfor %}
 		</table>
 	</div> {# programmations #}
-    <ul>
-       <!-- TODO : Problème en début et fin de liste  -->
-       <!-- TODO : Ajouter un title contenant la description du circuit sur lequel on se dirige -->
-        {% if circuit.id > 1 %}
-			     <li><a href="{{ path('circuit_show', { 'id': circuit.id-1 }) }}" title="">Précédent</a></li>
-	    {% endif %}
-        <li><a href="{{ path('circuit_show', { 'id': circuit.id+1 }) }}" title="">Suivant</a></li>
-    </ul>
+ 
 	</div> {# circuit #}
 	 <div class="comments"> {# Commentaires #}
 	   <h2>Comments:</h2>
@@ -102,10 +95,16 @@
         {% for comment in circuit.comments %}
         {% dump(comment) %}
         	<li>
+        		 {% if is_granted('ROLE_ADMIN') %}
+        		 <a href="{{ path('admin_delete_comment', {'id': circuit.id, 'comment_id' : comment.id}) }}">Supprimer le commentaire</a>
+        		 <br />
+        		 {% endif %}
         		<a href="{{ path('circuit_show_comment', {'id': circuit.id, 'comment_id': comment.id}) }}">
         			<strong>By {{ comment.authorEmail }} on {{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}:</strong>
         		</a>
-        		<br>
+        		<br />
+        		Note : {{ comment.note }}
+        		<br />
         	    {{ comment.content }}
         	</li>
         {% endfor %}

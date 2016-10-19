@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Entity\Circuit;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +45,7 @@ class CircuitController extends Controller
     	
     	$commentform = $this->createFormBuilder($newcomment)
     	->add('authorEmail', EmailType::class)
+    	->add('note',IntegerType::class)
     	->add('content', TextareaType::class)
     	->add('save', SubmitType::class, array('label' => 'Commenter'))
     	->getForm();
