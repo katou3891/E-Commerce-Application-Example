@@ -14,7 +14,7 @@ class CircuitRepository extends \Doctrine\ORM\EntityRepository
 		$query = $this->getEntityManager()
 		->createQuery(
 				'SELECT c FROM AppBundle:Circuit c, AppBundle:ProgrammationCircuit p
-	            WHERE p.circuit = c.id'
+	            WHERE p.circuit = c.id AND p.dateDepart > CURRENT_DATE() '
 				);
 				return $query->getArrayResult();
 	

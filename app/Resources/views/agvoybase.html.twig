@@ -26,10 +26,10 @@
                                     <li><a href="{{ path('presentation_show') }}">Qui sommes-nous ?</a></li>
                                     <li><a href="{{ path('circuit_index') }}" title="Voir les circuits disponibles">Circuits</a></li>
                                     <li><a href="{{ path('contact_show') }}">Contact</a></li>
-                                    <hr>
+                                   
                                      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                     <li><a href="{{ path('profile_show') }}">Bienvenue {{ user.prenom }} !</a></li>
                                       <li><a href="{{ path('collaborateurs_circuit_index') }}" title="Voir tous les circuits existants">Gérer les circuits</a></li>
-                                     	<li><a href="{{ path('profile_show') }}">Bienvenue {{ user.prenom }} !</a></li>
                                     	<li><a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
    								    {% else %}
                                     	<li><a href="{{ path('fos_user_security_login') }}">Se Connecter</a></li>
