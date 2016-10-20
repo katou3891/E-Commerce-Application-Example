@@ -1,0 +1,10 @@
+{% extends 'agvoybase.html.twig' %}
+
+{% block main %}
+    <h1>{{ title }}</h1>
+<a href="{{ path('admin_accounts_show', {'id': account.id }) }}">Revenir au profil</a>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}

@@ -101,7 +101,8 @@ class AuthenticatedController extends Controller
 	
 		//you're a client who needs to see only circuits which have programmations or an authenticated user who wants to see the application from the client side
 		$circuits = $em->getRepository('AppBundle:Circuit')->findAll();
-	
+		
+		
 		//showButtons -> boolean which is true : we want to see buttons that allows edition of the circuits
 		return $this->render('circuit/index.html.twig', array(
 				'circuits' => $circuits, 'user' => $user, 'showButtons'=> true

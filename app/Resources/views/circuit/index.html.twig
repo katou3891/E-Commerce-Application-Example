@@ -34,12 +34,13 @@
     <table>
         <thead>
             <tr>
-                <th>Numéro</th>
-                <th>Description</th>
+                
+                <th>Nom</th>
                 <th>Paysdepart</th>
                 <th>Villedepart</th>
                 <th>Villearrivee</th>
                 <th>Dureecircuit</th>
+ 
                 <th>Actions</th>
             </tr>
         </thead>
@@ -47,23 +48,29 @@
         {% if circuits|length == 0 %}
         <p>Aucun circuit programmé dans le futur pour l'instant.</p>
         {% endif %}
+          
         {% for circuit in circuits %}
-            <tr>
-                <td><a href="{{ path('circuit_show', { 'id': circuit.id }) }}">{{ circuit.id }}</a></td>
+         
+           	<tr>
+                
                 <td>{{ circuit.description }}</td>
                 <td>{{ circuit.paysDepart }}</td>
                 <td>{{ circuit.villeDepart }}</td>
                 <td>{{ circuit.villeArrivee }}</td>
+               
+     
                 <td>{{ circuit.dureeCircuit }} jours</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('circuit_show', { 'id': circuit.id }) }}">Plus de détails >> 	</a>
-                        </li>
-                    </ul>
+                <td><a href="{{ path('circuit_show', { 'id': circuit.id }) }}">Plus de détails >> 	</a>
                 </td>
-            </tr>
-        {% endfor %}
+              </tr>
+                {% endfor %}
+               
+               
+                    
+              
+                  
+                     
+        
         </tbody>
     </table>
     </div>

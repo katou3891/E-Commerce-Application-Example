@@ -30,7 +30,10 @@
                                      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                      <li><a href="{{ path('profile_show') }}">Bienvenue {{ user.prenom }} !</a></li>
                                       <li><a href="{{ path('collaborateurs_circuit_index') }}" title="Voir tous les circuits existants">Gérer les circuits</a></li>
-                                    	<li><a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
+                                    {% if is_granted('ROLE_ADMIN') %}
+                                    <li><a href="{{ path('admin_accounts_index') }}">Gérer les profils</a></li>
+                                    {% endif %}
+                                    <li><a href="{{ path('fos_user_security_logout') }}">Se déconnecter</a></li>
    								    {% else %}
                                     	<li><a href="{{ path('fos_user_security_login') }}">Se Connecter</a></li>
                                     {% endif %}

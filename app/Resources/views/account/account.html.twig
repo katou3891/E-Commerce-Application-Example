@@ -1,0 +1,23 @@
+{% extends 'agvoybase.html.twig' %}
+
+{% block main %}
+    <h1 class="text-center">Profil n°{{ account.id }}</h1>
+    <ul>
+    	<li><a href="{{ path('admin_accounts_index') }}">Revenir à la liste des comptes</a></li>
+        <li><a href="{{ path('admin_account_edit', {'id': account.id }) }}">Editer le compte</a></li>
+         <li><a href="{{ path('admin_account_remove', {'id': account.id }) }}">Supprimer le compte</a></li>
+         </ul>
+                                  
+                                    
+	<div class="row">
+	<div class="fos_user_user_show">
+    <p>Username : {{ user.username }}</p>
+     <p>Prénom : {{ user.prenom }}</p>
+    <p>Nom : {{ user.nom }}</p>
+    <p>Email : {{ user.email }}</p>
+    <p>Adresse : {{ user.adresse }}
+</div>
+</div>
+   
+    
+{% endblock %} {# main #}

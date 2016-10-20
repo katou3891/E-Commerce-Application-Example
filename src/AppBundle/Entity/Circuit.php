@@ -67,6 +67,9 @@ class Circuit
      */
     private $dureeCircuit;
 
+
+    
+    
     /**
      * Programmations de ce circuit
      * 
@@ -366,5 +369,6 @@ class Circuit
     {
     	$this->comments->removeElement($comment);
     }
+
     
 }

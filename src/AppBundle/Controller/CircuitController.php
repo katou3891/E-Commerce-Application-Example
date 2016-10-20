@@ -65,8 +65,14 @@ class CircuitController extends Controller
     	}
     	$em = $this->getDoctrine()->getManager();
     	$comments = $em->getRepository('AppBundle:Commentaire')->findComments($circuit->getId());
+    	
+    	
+    		$note = $em->getRepository('AppBundle:Circuit')->getAverage($circuit->getId());
+    		$note = $note[0]['note'];
+    	
+    	
     	return $this->render('circuit/show.html.twig', array(
-            'circuit' => $circuit, 'commentform'=> $commentform->createView(), 'comments' => $comments, 'user' => $user
+            'circuit' => $circuit, 'commentform'=> $commentform->createView(), 'comments' => $comments, 'note'=>$note, 'user' => $user
         		
         ));
     }

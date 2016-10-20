@@ -1,0 +1,39 @@
+{% extends 'agvoybase.html.twig' %}
+
+{% block main %}
+ 
+  	   <h1 class="text-center">Gestion des comptes</h1>
+   
+       
+        <li><a href=" {{ path('admin_account_new') }} ">Nouveau Compte</a></li>
+           <li><a href=" {{ path('admin_account_editdraft') }}">Editer le Brouillon</a></li>
+                                                      
+    <table>
+        <thead>
+            <tr>
+                <th>Numéro</th>
+               	<th>Username<th>
+               	<th></th>
+            </tr>
+        </thead>
+        <tbody>
+      
+        {% for account in accounts %}
+            <tr>
+                <td><a href="{{ path('admin_accounts_show', { 'id': account.id }) }}">{{ account.id }}</a></td>
+                <td>{{ account.username }}</td>
+               
+                <td>
+                    
+                            <a href="{{ path('admin_accounts_show', { 'id': account.id }) }}">Plus de détails >> 	</a>
+                       
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    
+   
+    
+{% endblock %} {# main #}
