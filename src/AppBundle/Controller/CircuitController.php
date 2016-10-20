@@ -136,6 +136,9 @@ class CircuitController extends Controller
     			$circuit->setVilleDepart($saveddraft['villeDepart']);
     			$circuit->setVilleArrivee($saveddraft['villeArrivee']);
     			$circuit->setDureeCircuit($saveddraft['dureeCircuit']);
+    			
+    		} else if ($request->attributes->get('_route') == "circuit_new") {
+    			$session = $this->get('session');
     			$session->remove('saveddraft');
     		}
     	}
@@ -188,10 +191,11 @@ class CircuitController extends Controller
     			$this->addFlash('success', 'Brouillon de circuit sauvegardé');
     
     			// Go back to the circuit list
-    			return $this->redirectToRoute('circuit_index', ['user' => $user]);
+    			return $this->redirectToRoute('collaborateurs_circuit_index');
     		}
     		else {
-    
+    			$session = $this->get('session');
+    			$session->remove('saveddraft');
     			// Persist for good in the DB
     			$entityManager = $this->getDoctrine()->getManager();
     			$entityManager->persist($circuit);
@@ -288,7 +292,9 @@ class CircuitController extends Controller
     	}
     	else {
     		if ($request->attributes->get('_route') == "etapes_new"){
-    			$etape=new Etape();}
+    			$etape=new Etape();
+    			$etape->setCircuit($circuit);
+    		}
     		else {
     			// cause the 404 page not found to be displayed
     			throw $this->createNotFoundException();
@@ -333,13 +339,13 @@ class CircuitController extends Controller
     			
     			switch ($request->attributes->get('_route')){
     				case "etapes_new" :
-    					$message = 'Etape '. $etape->getId() .' ajoutée avec succès';
+    					$message = 'Etape ajoutée avec succès';
     					break;
     				case "etapes_remove" :
-    					$message = 'Etape '. $etape->getId() .' supprimée avec succès';
+    					$message = 'Etape supprimée avec succès';
     					break;
     				default:
-    					$message = 'Etape '. $etape->getId() .' modifiée avec succès';
+    					$message = 'Etape modifiée avec succès';
     					break;
     			};
     			$this->addFlash('success', $message);
@@ -418,6 +424,7 @@ class CircuitController extends Controller
     	else {
     		if ($request->attributes->get('_route') == "programmations_new"){
     			$programmation=new ProgrammationCircuit();
+    			$programmation->setCircuit($circuit);
     		} else {
     			// cause the 404 page not found to be displayed
     			throw $this->createNotFoundException();

@@ -6,7 +6,7 @@
     {% if circuit_id != null %}
 	<p><a href="{{ path('circuit_show' ,{'user': user, 'id' : circuit_id }) }}">Retourner sur le circuit </a></p>
 	 {% else %}
-	 <p><a href="{{ path('circuit_index' ,{'user': user }) }}">Retourner sur la liste des circuits </a></p>
+	 <p><a href="{{ path('collaborateurs_circuit_index' ,{'user': user }) }}">Retourner sur la liste des circuits </a></p>
 	 {% endif %}
     {{ form_start(form) }}
     {{ form_widget(form) }}

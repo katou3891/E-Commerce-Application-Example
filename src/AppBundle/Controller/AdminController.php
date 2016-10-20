@@ -29,7 +29,7 @@ class AdminController extends Controller
 	 * @Route("/admin/account/{id}", name="admin_accounts_show", requirements={
 	 *              "id": "\d+"})
 	 *
-	 * @method("GET")
+	 *
 	 */
 	public function showAction($id = null)
 	{
@@ -62,14 +62,12 @@ class AdminController extends Controller
 	 * @Route("/admin/account/{id}/edit", name="admin_account_edit", requirements={
 	 *              "id": "\d+"})
 	 *
-	 * or edit a draft previously saved in the session
-	 * @Route("/admin/account/edit_draft", name="admin_account_editdraft")
 	 *
 	 * or remove an account
 	 * @Route("/admin/account/{id}/remove", name="admin_account_remove", requirements={
 	 *              "id": "\d+"})
 	 *
-	 * @Method("GET")
+	 * 
 	 */
 	public function newAction($id = null, Request $request)
 	{
@@ -91,32 +89,24 @@ class AdminController extends Controller
 		else {
 	
 			$account = new User();
-			$passwordEncoder = $this->container->get('security.password_encoder');
+			
 				
-				
-			// If invoked through the draft editing route
-			if ($request->attributes->get('_route') == "admin_account_editdraft") {
-				$session = $this->get('session');
-				$saveddraft = $session->get('account_draft');
-				$account->setUsername($saveddraft['username']);
-				$account->setEmail($saveddraft['email']);
-					
-				$account->setPassword($saveddraft['password']);
-				$account->setNom($saveddraft['nom']);
-				$account->setPrenom($saveddraft['prenom']);
-				$account->setAdresse($saveddraft['adresse']);
-				$account->setEnabled($saveddraft['enabled']);
-				$session->remove('saveddraft');
-			}
+
 		}
-	
+		$passwordEncoder = $this->container->get('security.password_encoder');
+		if (!$id){
+			$title = "Créer un compte";
+		} else {
+			$title = "Editer le compte n°".$id;
+		}
+		
 		// Construct the form
 		$formBuilder = $this->createFormBuilder($account);
 		if ($request->attributes->get('_route') == "admin_account_remove"){
 			/* Can have the possibility to put a textarea to explain a short comment on the reason of the deletion :
 			 $formBuilder->add('Commentaires', TextareaType::class); */
 			$formBuilder->add('Supprimer', SubmitType::class, array('label' => 'Supprimer'));
-			$title = "Supprimer le profil n°";
+			$title = "Etes-vous sûr de vouloir supprimer le compte n°".$id . " ?";
 		} else { // otherwise, we want to change or add an etape
 			
 			$formBuilder->add('username', TextType::class)
@@ -126,14 +116,11 @@ class AdminController extends Controller
 			->add('prenom', TextType::class)
 			->add('adresse', TextType::class)
 			->add('save', SubmitType::class, array('label' => 'Envoyer'));
-			$title = "Modifier le profil n°";
-		}
 			
-			
-		// If in new circuit creation, add a button to allow saving a draft
-		if (!$id) {
-			$formBuilder->add('saveDraft', SubmitType::class, array('label' => 'Sauver brouillon'));
 		}
+		
+			
+		
 	
 		$form = $formBuilder->getForm();
 	
@@ -143,29 +130,13 @@ class AdminController extends Controller
 	
 			$encodedPassword = $passwordEncoder->encodePassword($account,$account->getPassword());
 			$account->setPassword($encodedPassword);
-			// If the save draft button was clicked, save the draft to the session instead fo the DB
-			if((!$id) && $form->get('saveDraft')->isClicked()) {
-				$session = $this->get('session');
-				// We don't store the Circuit instance directly as Doctrine entities don't match so well with the session, it seems
-				$session->set('account_draft', [
-						'username' => $account->getUsername(),
-						'email' => $account->getEmail(),
-						'password' => $account->getPassword(),
-						'nom' => $account->getNom(),
-						'prenom' => $account->getPrenom(),
-						'adresse' => $account->getAdresse(),
-						'enabled' => true
-				]);
-				$this->addFlash('success', 'Brouillon de circuit sauvegardé');
-				// Go back to the circuit list
-				return $this->redirectToRoute('admin_accounts_index', ['user' => $user]);
-			}
-			else {
+		
+			
 				// Persist for good in the DB
 				$entityManager = $this->getDoctrine()->getManager();
 				$account->setEnabled(true);
 				$entityManager->persist($account);
-				if ($request->attributes->get('_route') == "circuit_remove"){
+				if ($request->attributes->get('_route') == "admin_account_remove"){
 					$entityManager->remove($account);
 				} else {
 					$entityManager->persist($account);
@@ -188,10 +159,10 @@ class AdminController extends Controller
 	
 				// either way, display the circuit
 				return $this->redirectToRoute('admin_accounts_show', ['id' => $account->getId()]);
-			}
+			
 		}
 		return $this->render('account/new.html.twig', [
-				'form' => $form->createView(), 'user' => $user, 'title'=>$title .$id, 'account'=>$account
+				'form' => $form->createView(), 'user' => $user, 'title'=>$title, 'account'=>$account
 		]);
 	}
 	

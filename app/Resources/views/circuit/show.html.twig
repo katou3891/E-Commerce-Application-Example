@@ -7,11 +7,13 @@
        		{{ circuit.description }}
        	</h2>
        	<ul>
-       		<li><a href="{{ path('circuit_index') }}">Retour à la liste</a></li>
-    	  {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        	<li><a href="{{ path('circuit_edit', {'id': circuit.id}) }}">Modifier le circuit</a></li>
-        	<li><a href="{{ path('circuit_remove', {'id': circuit.id}) }}">Supprimer le circuit</a></li>
-          {% endif %}
+       	{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			  	<li><a href="{{ path('collaborateurs_circuit_index') }}">Retour à la liste</a></li>
+			   	<li><a href="{{ path('circuit_edit', {'id': circuit.id}) }}">Modifier le circuit</a></li>
+        		<li><a href="{{ path('circuit_remove', {'id': circuit.id}) }}">Supprimer le circuit</a></li>
+	    {% else %}
+       			<li><a href="{{ path('circuit_index') }}">Retour à la liste</a></li>
+       	{% endif %}
        </ul>
                                    
     	<h3>Détails</h3>

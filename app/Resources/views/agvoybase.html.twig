@@ -6,7 +6,7 @@
                     <div class="container">
                         <div class="navbar-header">
                             <a class="navbar-brand" href="{{ path('homepage') }}">
-                                Accueil Symfony
+                               <img src="http://www.travel-reporter.net/wp-content/uploads/2015/01/logo-avion.png" alt="Accueil Symfony" style="width: 3.2em; margin-top: -1em;"/>
                             </a>
 
                             <button type="button" class="navbar-toggle"
@@ -26,6 +26,7 @@
                                     <li><a href="{{ path('presentation_show') }}">Qui sommes-nous ?</a></li>
                                     <li><a href="{{ path('circuit_index') }}" title="Voir les circuits disponibles">Circuits</a></li>
                                     <li><a href="{{ path('contact_show') }}">Contact</a></li>
+                                    
                                    
                                      {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                      <li><a href="{{ path('profile_show') }}">Bienvenue {{ user.prenom }} !</a></li>
@@ -37,6 +38,7 @@
    								    {% else %}
                                     	<li><a href="{{ path('fos_user_security_login') }}">Se Connecter</a></li>
                                     {% endif %}
+                                       
                                 {% endblock %}
 
                             </ul>

@@ -356,7 +356,6 @@ class Circuit
      */
     public function addComment(Commentaire $comment)
     {
-    	dump($comment);
     	$this->comments->add($comment);
     	$comment->setCircuit($this);
     }
