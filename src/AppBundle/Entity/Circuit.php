@@ -12,6 +12,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 
@@ -67,7 +68,16 @@ class Circuit
      */
     private $dureeCircuit;
 
-
+    /**
+     * @var int
+     * @ORM\Column(name="note", type="smallint", nullable=true)
+     * @Assert\Range(
+     * 		min = 0,
+     *      max = 5,
+     * )
+     *
+     */
+    private $note;
     
     
     /**
@@ -235,6 +245,7 @@ class Circuit
         $this->programmations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->etapes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->note = "Null";
     }
 
     /**
@@ -369,5 +380,18 @@ class Circuit
     	$this->comments->removeElement($comment);
     }
 
+    /*
+     * Get the average of the circuit
+     */
+    public  function getNote(){
+    	return $this->note;
+    }
+    
+    /*
+     * Change the average of the circuit
+     */
+    public function setNote($num){
+    	$this->note = $num;
+    }
     
 }

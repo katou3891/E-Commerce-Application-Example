@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Comment on {{ circuit.description }}</h1>
-    
+    	<li><a href="{{ path('circuit_show', {'id': comment.circuit.id }) }}">Retour au circuit</a></li>
     <div class="date">{{ comment.publishedAt|localizeddate('medium', 'short', null, 'UTC') }}</div>
     <div class="body">
         {% dump(comment) %}

@@ -16,7 +16,7 @@ class LoadCircuitData extends AbstractFixture implements OrderedFixtureInterface
 		$circuit->setPaysDepart('Espagne');
 		$circuit->setVilleDepart('Grenade');
 		$circuit->setVilleArrivee('Séville');
-		//$circuit->setDureeCircuit(4);
+		$circuit->setDureeCircuit(4);
 		$manager->persist($circuit);
 		
 		$this->addReference('andalousie-circuit', $circuit);

@@ -25,7 +25,7 @@ class CircuitRepository extends \Doctrine\ORM\EntityRepository
 	public function getAverage($id){
 		$query = $this->getEntityManager()
 		->createQuery(
-				'SELECT AVG(co.note) note FROM AppBundle:Circuit c, AppBundle:Commentaire co
+				'SELECT AVG(co.note) AS note FROM AppBundle:Circuit c, AppBundle:Commentaire co
 	            WHERE co.circuit = c.id AND c.id = :id '
 				)->setParameter('id', $id);
 		return $query->getArrayResult();

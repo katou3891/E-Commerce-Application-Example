@@ -50,29 +50,25 @@ class CircuitController extends Controller
     	->add('save', SubmitType::class, array('label' => 'Commenter'))
     	->getForm();
     	$commentform->handleRequest($request);
-    	
+    	$em = $this->getDoctrine()->getManager();
     	if ($commentform->isSubmitted() && $commentform->isValid()){
-    		$entityManager = $this->getDoctrine()->getManager();   
+ 
     		$circuit->addComment($newcomment);
-    		$entityManager->persist($newcomment);
-    		$entityManager->persist($circuit);
-    	
-    		$entityManager->flush();
-    	
+    		$em->persist($newcomment);
+    		$em->flush();
     		$this->addFlash('success', 'Commentaire créé avec succès');
     		return $this->redirectToRoute('circuit_show', ['id' => $circuit->getId()]);
     	
     	}
-    	$em = $this->getDoctrine()->getManager();
-    	$comments = $em->getRepository('AppBundle:Commentaire')->findComments($circuit->getId());
     	
-    	
-    		$note = $em->getRepository('AppBundle:Circuit')->getAverage($circuit->getId());
-    		$note = $note[0]['note'];
-    	
-    	
+    	$id=$circuit->getId();
+    	$note = $em->getRepository('AppBundle:Circuit')->getAverage($id);
+    	dump($note);
+    	$circuit->setNote(round($note[0]['note'],1));
+    	$em->persist($circuit);
+    	$em->flush();
     	return $this->render('circuit/show.html.twig', array(
-            'circuit' => $circuit, 'commentform'=> $commentform->createView(), 'comments' => $comments, 'note'=>$note, 'user' => $user
+            'circuit' => $circuit, 'commentform'=> $commentform->createView(),  'user' => $user
         		
         ));
     }
