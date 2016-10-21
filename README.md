@@ -61,9 +61,19 @@ Ce sont toutes les autres routes, elles sont utilisées pour le frontend (quand 
 
 
 
+Les comptes Utilisateurs
+- Administrateur
+    Uniquement anna_admin 
+    Mot de passe : kitten
+Il est imposssible de créer d'autres comptes administrateurs.
 
-    quels sont les comptes utilisateurs de votre application
+- Collaborateurs :
+    -- john_user
+    Mot de passe : kitten
+    -- recard_k
+    Mot de passe : kitten
+    -- rodriguez_h
+    Mot de passe : kitten
+
+
     
-    
-    
-    ainsi que tout commentaire à notre attention ;
