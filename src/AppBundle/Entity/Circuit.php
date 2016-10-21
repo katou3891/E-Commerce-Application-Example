@@ -46,6 +46,12 @@ class Circuit
      * @ORM\Column(name="pays_depart", type="string", length=30, nullable=true)
      */
     private $paysDepart;
+    
+    /**
+     * @ORM\Column(name="publishedAt", type="datetime")
+     * @Assert\DateTime()
+     */
+    private $publishedAt;
 
     /**
      * @var string
@@ -245,7 +251,8 @@ class Circuit
         $this->programmations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->etapes = new \Doctrine\Common\Collections\ArrayCollection();
         $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->note = "Null";
+        $this->note = 0;
+        $this->publishedAt = new \DateTime();
     }
 
     /**
@@ -392,6 +399,15 @@ class Circuit
      */
     public function setNote($num){
     	$this->note = $num;
+    }
+    
+    public function getPublishedAt()
+    {
+    	return $this->publishedAt;
+    }
+    public function setPublishedAt(\DateTime $publishedAt)
+    {
+    	$this->publishedAt = $publishedAt;
     }
     
 }

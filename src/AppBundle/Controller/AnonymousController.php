@@ -15,13 +15,14 @@ class AnonymousController extends Controller
 {
 
 	/**
-	 * Lists all Circuit entities that have programmation (we suppose that these programmations are not in the past)
+	 * Lists all Circuit entities that have programmations
+	 * (we suppose that these programmations are not in the past)
 	 *
 	 * @Route("/circuit/", name="circuit_index")
 	 * @Method("GET")
 	 *
 	 */
-	public function showCircuits()
+	public function showAvailableCircuits()
 	{
 		$em = $this->getDoctrine()->getManager();
 		$user = $this->getUser();
@@ -44,14 +45,22 @@ class AnonymousController extends Controller
      * @Route("/accueil/", name="accueil_show")
      * @Method("GET")
      */
-    public function indexAction()
+    public function showHomePage()
     {
         $em = $this->getDoctrine()->getManager();
 		$user = $this -> getUser();
-        $circuits = $em->getRepository('AppBundle:Circuit')->findAll();
-		
+        $circuits = $em->getRepository('AppBundle:Circuit')->findtheBests();
+        $best_circuits = [];
+        for ($i=0;$i<min(5,count($circuits));++$i) {
+        	$best_circuits[$i]= $circuits[$i];
+        }
+        $circuits = $em->getRepository('AppBundle:Circuit')->findtheLastsPublished();
+        $new_circuits = [];
+        for ($i=0;$i<min(2,count($circuits));++$i) {
+        	$new_circuits[$i]= $circuits[$i];
+        }
         return $this->render('anonymous/accueil.html.twig', array(
-            'circuits' => $circuits, 'user' => $user, 
+            'best_circuits' => $best_circuits, 'user' => $user, 'new_circuits' => $new_circuits,
         		'presentation' => array('nom'=>'La meilleure Agence Ever', 'telephone'=> '0474544800', 'adresse'=>"9 Rue Charles Fourier 91011 Evry CEDEX")
         ));
     }
@@ -63,7 +72,7 @@ class AnonymousController extends Controller
      * @Route("/contact/", name="contact_show")
      * @Method("GET")
      */
-    public function showAction()
+    public function showContact()
     {
     	
     	$user = $this -> getUser();   	
@@ -74,16 +83,15 @@ class AnonymousController extends Controller
     }
     
     /**
-     * Contact
+     * A propos de l'agence
      *
      * @Route("/presentation/", name="presentation_show")
      * @Method("GET")
      */
     public function showPresentation()
     {
-    	 
     	$user = $this -> getUser();
-    	return $this->render('anonymous/apropos.html.twig',  array('user' => $user, 
+    	return $this->render('anonymous/apropos.html.twig',  array('user' => $user,
     			'presentation' => array('nom'=>'La meilleure Agence Ever', 'telephone'=> '0474544800', 'adresse'=>"9 Rue Charles Fourier 91011 Evry CEDEX")
     	));
     }

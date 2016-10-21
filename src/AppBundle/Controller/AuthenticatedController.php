@@ -20,7 +20,7 @@ class AuthenticatedController extends Controller
 {
 	
 	/**
-	 * Show the user
+	 * Show the current collaborateur profile
 	 * @Route("/manage/mon_profil", name="profile_show")
 	 * 
 	 * @Method("GET")
@@ -35,7 +35,7 @@ class AuthenticatedController extends Controller
 	}
 	
 	/**
-	 * Edit the user
+	 * Edit the current collaborateur profile
 	 * @Route("manage/mon_profil_edit", name="profile_edit")
 	 * 
 	 * @Method("GET")
@@ -80,12 +80,13 @@ class AuthenticatedController extends Controller
 	
 			return $response;
 		}
-	//TODO : CREATE A VIEW TO EDIT PROFILE
 		return $this->render('authenticated/edit.html.twig', array(
 				'form' => $form->createView(), 'user' => $user
 		));
 	}
   
+	// TO MANAGE ALL CIRCUITS //
+	
 
 	/**
 	 * Lists all Circuit entities.

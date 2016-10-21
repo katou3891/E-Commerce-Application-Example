@@ -9,18 +9,44 @@
 	<div class="row">
 		<div class="col-sm-3"> <!-- A propos -->
 			<div class="well"><h2>Promotions</h2></div>
-			<div class="well"><h2>Nouveautés</h2></div>
+			<div class="well"><h2>Nouveautés</h2>
+			 <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Pays de départ</th>
+                <th>Durée du circuit</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for circuit in new_circuits %}
+            <tr>
+                <td>{{ circuit.description }}</td>
+                <td>{{ circuit.paysDepart }}</td>
+                <td>{{ circuit.dureeCircuit }} jours</td>
+                <td>
+                    
+                            <a href="{{ path('circuit_show', { 'id': circuit.id }) }}">En savoir plus >></a>
+                      
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+			</div>
 		</div>
 		<div class="col-sm-6"> <!--  partie centrale -->
 		<div class="well" id="search"><form></form></div>
-		<div class="well"><h2>Les mieux notés</h2></div>
+		<div class="well"><h2>Les plus demandés</h2></div>
 		 <!--  liste des cricuits -->
 		 <div class="well">
-		 <h2>Les plus demandés</h2>
+		 <h2>Les mieux notés</h2>
 		 <table>
         <thead>
             <tr>
-               <!--  <th>Numéro</th> -->
+              
+               <th>Note</th>
                 <th>Description</th>
                 <th>Pays de départ</th>
                 <th>Ville de départ</th>
@@ -30,9 +56,9 @@
             </tr>
         </thead>
         <tbody>
-        {% for circuit in circuits %}
+        {% for circuit in best_circuits %}
             <tr>
-              <!--    <td><a href="{# {{ path('circuit_show', { 'id': circuit.id }) }}">{{ circuit.id }} #}</a></td>-->
+           		<td>{{ circuit.note }}</td>
                 <td>{{ circuit.description }}</td>
                 <td>{{ circuit.paysDepart }}</td>
                 <td>{{ circuit.villeDepart }}</td>

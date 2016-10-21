@@ -18,7 +18,7 @@
                                    
     	<h3>Détails</h3>
 		<div class="circuit_details">
-		<p>Note globale : {{ circuit.note }}</p>
+		<p>Note globale : {{ circuit.note }}/5</p>
 			<p>Description: {{ circuit.description }}</p>
 			<p>Départ de {{ circuit.villeDepart }} pour {{ circuit.dureeCircuit }} j. de voyage à travers le {{ circuit.paysDepart }}, pour terminer à {{ circuit.villeArrivee }}.</p>
 			<h3>Étapes</h3>
@@ -68,6 +68,10 @@
 						<th></th>
 					</tr>
 				</thead>
+				{% if (circuit.programmations|length == 0) %}
+				<p>Aucune programmation de prévue pour le moment</p>
+				{% endif %}
+				
 		{%  for programmation in circuit.programmations %}
 			<tr>
 			   <td>{{ programmation.dateDepart|date('d-m-Y')  }}</td>

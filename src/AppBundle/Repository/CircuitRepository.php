@@ -31,6 +31,23 @@ class CircuitRepository extends \Doctrine\ORM\EntityRepository
 		return $query->getArrayResult();
 	}
 	
+	public function findTheBests(){
+		$query = $this->getEntityManager()
+		->createQuery(
+				'SELECT c FROM AppBundle:Circuit c ORDER BY c.note DESC'
+				);
+				return $query->getArrayResult();
+	}
+	
+	public function findtheLastsPublished(){
+		$query = $this->getEntityManager()
+		->createQuery(
+				'SELECT c FROM AppBundle:Circuit c ORDER BY c.publishedAt DESC'
+				);
+		return $query->getArrayResult();
+		
+	}
+	
 	
 
 }

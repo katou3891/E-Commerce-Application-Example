@@ -31,7 +31,7 @@ class AdminController extends Controller
 	 *
 	 *
 	 */
-	public function showAction($id = null)
+	public function showAccounts($id = null)
 	{
 		$user = $this->getUser();
 		$em = $this->getDoctrine()->getManager();
@@ -69,7 +69,7 @@ class AdminController extends Controller
 	 *
 	 * 
 	 */
-	public function newAction($id = null, Request $request)
+	public function editAccounts($id = null, Request $request)
 	{
 		$user=$this->getUser();
 		// If called for edition, load the circuit from the DB
@@ -196,7 +196,7 @@ class AdminController extends Controller
 		->add('Supprimer', SubmitType::class, array('label' => 'Supprimer'))
 		->getForm();
 		$commentform->handleRequest($request);
-			
+		
 		if ($commentform->isSubmitted() && $commentform->isValid()){
 			$entityManager = $this->getDoctrine()->getManager();
 			$circuit->removeComment($comment);
@@ -209,7 +209,16 @@ class AdminController extends Controller
 			return $this->redirectToRoute('circuit_show', ['id' => $circuit->getId()]);
 	
 		}
+		
+		// As a comment was deleted, the note of the circuit has change and must be update
+		$id=$circuit->getId();
 		$em = $this->getDoctrine()->getManager();
+		$note = $em->getRepository('AppBundle:Circuit')->getAverage($id);
+		$circuit->setNote(round($note[0]['note'],1));
+		$em->persist($circuit);
+		$em->flush();
+		
+		// We go loooking for the comments in order to display them
 		$comments = $em->getRepository('AppBundle:Commentaire')->findComments($circuit->getId());
 		return $this->render('circuit/new.html.twig', array('title'=>'Etes-vous sûr de vouloir supprimer ce commentaire ?',
 				'circuit' => $circuit, 'form'=> $commentform->createView(), 'comments' => $comments, 'user' => $user, 'circuit_id'=>$circuit->getId()

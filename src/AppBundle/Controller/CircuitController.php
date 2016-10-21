@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use AppBundle\Entity\Etape;
 use AppBundle\Entity\ProgrammationCircuit;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 
 /**
@@ -24,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 class CircuitController extends Controller
 {
   
+	// CONTROLLER FOR ANONYMOUS USER //
 
     /**
      * Finds and displays a Circuit entity.
@@ -33,7 +35,7 @@ class CircuitController extends Controller
 	 *     })
      * 
      */
-    public function showAction(Circuit $circuit, Request $request)
+    public function showCircuit(Circuit $circuit, Request $request)
     {
     	if (!$circuit) {
     		// cause the 404 page not found to be displayed
@@ -52,7 +54,6 @@ class CircuitController extends Controller
     	$commentform->handleRequest($request);
     	$em = $this->getDoctrine()->getManager();
     	if ($commentform->isSubmitted() && $commentform->isValid()){
- 
     		$circuit->addComment($newcomment);
     		$em->persist($newcomment);
     		$em->flush();
@@ -60,13 +61,13 @@ class CircuitController extends Controller
     		return $this->redirectToRoute('circuit_show', ['id' => $circuit->getId()]);
     	
     	}
-    	
+    	//we update the circuit note each time in case the admin delete some commentaries (and so some users note)
     	$id=$circuit->getId();
     	$note = $em->getRepository('AppBundle:Circuit')->getAverage($id);
     	dump($note);
     	$circuit->setNote(round($note[0]['note'],1));
     	$em->persist($circuit);
-    	$em->flush();
+    	$em->flush(); 
     	return $this->render('circuit/show.html.twig', array(
             'circuit' => $circuit, 'commentform'=> $commentform->createView(),  'user' => $user
         		
@@ -85,6 +86,7 @@ class CircuitController extends Controller
     }
     
     
+    // CONTROLLER FOR COLLABORATEURS //
  
     
     /**
@@ -109,20 +111,17 @@ class CircuitController extends Controller
     	if ($id) {
     		$circuit = $this->getDoctrine()
     		->getRepository('AppBundle:Circuit')
-    		->find($id);
-    			
+    		->find($id);	
     		dump($circuit);
-    			
     		if (!$circuit) {
     			// cause the 404 page not found to be displayed
     			throw $this->createNotFoundException();
-    		}
-    			
+    		}		
+    		$title="Modifier le circuit";
     	}
-    	else {
-    		   			
-    		$circuit = new Circuit();
-    			
+    	else {   			
+    		$circuit = new Circuit();	
+    		$title="Créer un circuit";
     		// If invoked through the draft editing route
     		if ($request->attributes->get('_route') == "circuit_editdraft") {
     			$session = $this->get('session');
@@ -131,20 +130,21 @@ class CircuitController extends Controller
     			$circuit->setPaysDepart($saveddraft['paysDepart']);
     			$circuit->setVilleDepart($saveddraft['villeDepart']);
     			$circuit->setVilleArrivee($saveddraft['villeArrivee']);
-    			$circuit->setDureeCircuit($saveddraft['dureeCircuit']);
-    			
+    			$circuit->setDureeCircuit($saveddraft['dureeCircuit']);		
     		} else if ($request->attributes->get('_route') == "circuit_new") {
     			$session = $this->get('session');
     			$session->remove('saveddraft');
     		}
+    		
     	}
     
     	// Construct the form
     	$formBuilder = $this->createFormBuilder($circuit);
-    	if ($request->attributes->get('_route') == "etapes_remove"){
+    	if ($request->attributes->get('_route') == "circuit_remove"){
     		/* Can have the possibility to put a textarea to explain a short comment on the reason of the deletion :
     		 $formBuilder->add('Commentaires', TextareaType::class); */
     		$formBuilder->add('Supprimer', SubmitType::class, array('label' => 'Supprimer'));
+    		$title="Etes-vous sûr de vouloir supprimer le circuit n°" . $circuit->getId() ." ?";
     	} else { // otherwise, we want to change or add an etape
     		$formBuilder->add('description', TextType::class)
     		->add('dureeCircuit', IntegerType::class)
@@ -152,28 +152,25 @@ class CircuitController extends Controller
     		->add('VilleDepart', TextType::class)
     		->add('VilleArrivee', TextType::class)
     		->add('save', SubmitType::class, array('label' => 'Envoyer'));
+    		
+    		// If in new circuit creation, add a button to allow saving a draft
+    		if (!$id) {
+    			$formBuilder->add('saveDraft', SubmitType::class, array('label' => 'Sauver brouillon'));
+    		}
     	}
     	
        
-    	// If in new circuit creation, add a button to allow saving a draft
-    	if (!$id) {
-    		$formBuilder->add('saveDraft', SubmitType::class, array('label' => 'Sauver brouillon'));
-    	}
-    
-    	$form = $formBuilder->add('save', SubmitType::class, array('label' => 'Envoyer'))
-    	->getForm();
-    
+    	
+    	$form = $formBuilder->getForm();
     	$form->handleRequest($request);
     
     	if ($form->isSubmitted() && $form->isValid()) {
-    
-    	
-    
+ 
     		// If the save draft button was clicked, save the draft to the session instead fo the DB
     		if((!$id) && $form->get('saveDraft')->isClicked()) {
     
     			$session = $this->get('session');
-    
+    		
     			// We don't store the Circuit instance directly as Doctrine entities don't match so well with the session, it seems
     			$session->set('saveddraft', [
     					'description' => $circuit->getDescription(), 
@@ -183,7 +180,7 @@ class CircuitController extends Controller
     					'dureeCircuit' => $circuit->getDureeCircuit()    					
     			]);
     			
-    
+    			
     			$this->addFlash('success', 'Brouillon de circuit sauvegardé');
     
     			// Go back to the circuit list
@@ -192,6 +189,11 @@ class CircuitController extends Controller
     		else {
     			$session = $this->get('session');
     			$session->remove('saveddraft');
+    			
+    			if ($request->attributes->get('_route') == "circuit_new") {
+    				$date = new \DateTime();
+    				$circuit->setPublishedAt($date);
+    			}
     			// Persist for good in the DB
     			$entityManager = $this->getDoctrine()->getManager();
     			$entityManager->persist($circuit);
@@ -214,13 +216,16 @@ class CircuitController extends Controller
     					break;
     			};
     			$this->addFlash('success', $message);
-    
+    			$id = $circuit->getId();
+    			if ($id){
     			// either way, display the circuit
-    			return $this->redirectToRoute('circuit_show', ['id' => $circuit->getId(), 'user' => $user]);
+    			return $this->redirectToRoute('circuit_show', ['id' => $id, 'user' => $user]);
+    			}
+    			return $this->redirectToRoute('collaborateurs_circuit_index');
     		}
     	}
     	return $this->render('circuit/new.html.twig', [
-    			'form' => $form->createView(), 'user' => $user, 'title'=>"Modifier le circuit",  'circuit_id' => $id
+    			'form' => $form->createView(), 'user' => $user, 'title'=>$title,  'circuit_id' => $id
     	]);
     }
     
