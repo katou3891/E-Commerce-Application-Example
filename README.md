@@ -76,4 +76,14 @@ Il est imposssible de créer d'autres comptes administrateurs.
     Mot de passe : kitten
 
 
+Spécificités du rendu :
+- Fonctionnalité 1 : Modification, création et suppression de circuits et de leurs étapes possibles uniquement pour les personnes authentifiées (collaborateurs+admin)
+- Fonctionnalité 2 : Modification, création et suppressions des programmations des circuits uniquement possibles pour les personnes authentifiées (collaborateurs+admin)
+- Fonctionnalité 3 : Tout le monde peut noter et commenter les circuits. L'administrateur est la seule personne qui puisse supprimer les commentaires. 
+- Fonctionnalité 4 : Les clients (personnes non authentifiées) ne peuvent voir dans l'index des circuits uniquement les circuits avec des programmations futures.
+Si ils modifient l'URL, ils peuvent cependant voir le détail de tous les circuits, mais cela n'entraine pas de faille de sécurité.
+- Fonctionnalité 5 : L'administrateur peut créer, modifier ou supprimer les comptes collaborateurs
+- Fonctionnalité 6 : La page d'accueil permet à l'utilisateur de voir les cinq circuits les mieux notés par les clients, et aussi les deux circuits les plus récents même si ces circuits n'ont pas encore de programmations futures.
+
+
     
